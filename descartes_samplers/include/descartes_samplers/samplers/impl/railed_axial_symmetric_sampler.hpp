@@ -46,9 +46,9 @@ bool RailedAxialSymmetricSampler<FloatType>::sample(std::vector<FloatType>& solu
 
   const auto nSamplesInBuffer = [](const std::vector<FloatType>& v) -> std::size_t { return v.size() / dof; };
 
-  FloatType angle = static_cast<FloatType>(-1.0 * M_PI);
+  FloatType angle = static_cast<FloatType>(-1.0 * EIGEN_PI);
 
-  while (angle <= M_PI)  // loop over each waypoint
+  while (angle <= EIGEN_PI)  // loop over each waypoint
   {
     Eigen::Transform<FloatType, 3, Eigen::Isometry> p =
         tool_pose_ * Eigen::AngleAxis<FloatType>(angle, Eigen::Matrix<FloatType, 3, 1>::UnitZ());
@@ -89,9 +89,9 @@ bool RailedAxialSymmetricSampler<FloatType>::getBestSolution(std::vector<FloatTy
 
   const auto nSamplesInBuffer = [](const std::vector<FloatType>& v) -> std::size_t { return v.size() / dof; };
 
-  FloatType angle = static_cast<FloatType>(-1.0 * M_PI);
+  FloatType angle = static_cast<FloatType>(-1.0 * EIGEN_PI);
 
-  while (angle <= M_PI)  // loop over each waypoint
+  while (angle <= EIGEN_PI)  // loop over each waypoint
   {
     Eigen::Transform<FloatType, 3, Eigen::Isometry> p =
         tool_pose_ * Eigen::AngleAxis<FloatType>(angle, Eigen::Matrix<FloatType, 3, 1>::UnitZ());

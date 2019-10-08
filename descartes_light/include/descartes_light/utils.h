@@ -57,7 +57,7 @@ inline std::vector<FloatType> getRedundantSolutions(const FloatType* sol,
   for (int i = 0; i < dof; ++i)
   {
     val = sol[i];
-    while ((val -= (2 * M_PI)) > limits(i, 0))
+    while ((val -= (2 * EIGEN_PI)) > limits(i, 0))
     {
       std::vector<FloatType> new_sol(sol, sol + dof);
       new_sol[i] = val;
@@ -65,7 +65,7 @@ inline std::vector<FloatType> getRedundantSolutions(const FloatType* sol,
     }
 
     val = sol[i];
-    while ((val += (static_cast<FloatType>(2.0 * M_PI))) < limits(i, 1))
+    while ((val += (static_cast<FloatType>(2.0 * EIGEN_PI))) < limits(i, 1))
     {
       std::vector<FloatType> new_sol(sol, sol + dof);
       new_sol[i] = val;
@@ -89,8 +89,8 @@ inline bool isValid(const FloatType* qs, int dof)
 template <typename FloatType>
 inline void harmonizeTowardZero(FloatType* qs, int dof)
 {
-  const static FloatType pi = FloatType(M_PI);
-  const static FloatType two_pi = FloatType(2.0 * M_PI);
+  const static FloatType pi = FloatType(EIGEN_PI);
+  const static FloatType two_pi = FloatType(2.0 * EIGEN_PI);
 
   for (int i = 0; i < dof; i++)
   {

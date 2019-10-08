@@ -23,6 +23,8 @@
 #include <opw_kinematics/opw_utilities.h>
 #include <console_bridge/console.h>
 
+#include <array>
+
 namespace descartes_light
 {
 template <typename FloatType>

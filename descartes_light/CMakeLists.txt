@@ -15,14 +15,18 @@ if(NOT TARGET OpenMP::OpenMP_CXX)
 endif()
 
 find_package(Eigen3 REQUIRED)
-find_package(console_bridge)
+find_package(console_bridge REQUIRED)
+
+include_directories(${console_bridge_INCLUDE_DIRS})
 
 list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_std_11 CXX_FEATURE_FOUND)
 
 # Interface Library
 add_library(${PROJECT_NAME}_core INTERFACE)
 target_link_libraries(${PROJECT_NAME}_core INTERFACE console_bridge)
-target_compile_options(${PROJECT_NAME}_core INTERFACE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME}_core INTERFACE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
+endif()
 if(CXX_FEATURE_FOUND EQUAL "-1")
     target_compile_options(${PROJECT_NAME}_core INTERFACE -std=c++11)
 else()
@@ -35,13 +39,15 @@ target_include_directories(${PROJECT_NAME}_core SYSTEM INTERFACE
     ${EIGEN3_INCLUDE_DIRS})
 
 # Core Library
-add_library(${PROJECT_NAME} SHARED
+add_library(${PROJECT_NAME} STATIC
   src/descartes_light.cpp
   src/ladder_graph.cpp
   src/ladder_graph_dag_search.cpp
 )
 target_link_libraries(${PROJECT_NAME} console_bridge OpenMP::OpenMP_CXX)
-target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
+endif()
 if(CXX_FEATURE_FOUND EQUAL "-1")
     target_compile_options(${PROJECT_NAME} PUBLIC -std=c++11)
 else()
@@ -54,13 +60,15 @@ target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC
     ${EIGEN3_INCLUDE_DIRS})
 
 # Declare a C++ library
-add_library(${PROJECT_NAME}_gantry SHARED src/gantry_kinematics.cpp)
+add_library(${PROJECT_NAME}_gantry STATIC src/gantry_kinematics.cpp)
 target_link_libraries(${PROJECT_NAME}_gantry PUBLIC console_bridge ${PROJECT_NAME}_core)
-target_compile_options(${PROJECT_NAME}_gantry PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
-if(CXX_FEATURE_FOUND EQUAL "-1")
-    target_compile_options(${PROJECT_NAME}_gantry PUBLIC -std=c++11)
-else()
-    target_compile_features(${PROJECT_NAME}_gantry PUBLIC cxx_std_11)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME}_gantry PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
+	if(CXX_FEATURE_FOUND EQUAL "-1")
+		target_compile_options(${PROJECT_NAME}_gantry PUBLIC -std=c++11)
+	else()
+		target_compile_features(${PROJECT_NAME}_gantry PUBLIC cxx_std_11)
+	endif()
 endif()
 target_include_directories(${PROJECT_NAME}_gantry PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"

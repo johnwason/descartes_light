@@ -5,18 +5,22 @@ find_package(descartes_light REQUIRED)
 find_package(opw_kinematics REQUIRED)
 find_package(console_bridge REQUIRED)
 
+include_directories(${console_bridge_INCLUDE_DIRS})
+
 list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_std_11 CXX_FEATURE_FOUND)
 
 # Declare a C++ library
-add_library(${PROJECT_NAME} SHARED
+add_library(${PROJECT_NAME} STATIC
   src/descartes_opw_kinematics.cpp
 )
 target_link_libraries(${PROJECT_NAME} console_bridge opw_kinematics::opw_kinematics descartes::descartes_light)
-target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
-if(CXX_FEATURE_FOUND EQUAL "-1")
-    target_compile_options(${PROJECT_NAME} PUBLIC -std=c++11)
-else()
-    target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
+	if(CXX_FEATURE_FOUND EQUAL "-1")
+		target_compile_options(${PROJECT_NAME} PUBLIC -std=c++11)
+	else()
+		target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
+	endif()
 endif()
 target_include_directories(${PROJECT_NAME} PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"

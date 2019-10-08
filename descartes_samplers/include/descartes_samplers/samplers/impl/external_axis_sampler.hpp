@@ -55,8 +55,8 @@ bool ExternalAxisSampler<FloatType>::sample(std::vector<FloatType>& solution_set
   };
 
   // So we just loop
-  const static FloatType discretization = static_cast<FloatType>(M_PI / 36.0);
-  for (FloatType angle = static_cast<FloatType>(-1.0 * M_PI); angle <= static_cast<FloatType>(M_PI);
+  const static FloatType discretization = static_cast<FloatType>(EIGEN_PI / 36.0);
+  for (FloatType angle = static_cast<FloatType>(-1.0 * EIGEN_PI); angle <= static_cast<FloatType>(EIGEN_PI);
        angle += discretization)
   {
     std::vector<FloatType> buffer;
@@ -106,13 +106,13 @@ bool SpoolSampler<FloatType>::sample(std::vector<FloatType>& solution_set)
     const FloatType y = static_cast<FloatType>(0.0);
     const FloatType z = static_cast<FloatType>(0.0);
     return Eigen::Translation<FloatType, 3>(x, y, z) *
-           Eigen::AngleAxis<FloatType>(static_cast<FloatType>(M_PI / 2.0), Eigen::Matrix<FloatType, 3, 1>::UnitX()) *
+           Eigen::AngleAxis<FloatType>(static_cast<FloatType>(EIGEN_PI / 2.0), Eigen::Matrix<FloatType, 3, 1>::UnitX()) *
            Eigen::AngleAxis<FloatType>(positioner_angle, Eigen::Matrix<FloatType, 3, 1>::UnitZ()) * pose_in_positioner;
   };
 
   // So we just loop
-  const static FloatType discretization = static_cast<FloatType>(M_PI / 36.0);
-  for (FloatType angle = static_cast<FloatType>(-2.0 * M_PI); angle <= static_cast<FloatType>(2.0 * M_PI);
+  const static FloatType discretization = static_cast<FloatType>(EIGEN_PI / 36.0);
+  for (FloatType angle = static_cast<FloatType>(-2.0 * EIGEN_PI); angle <= static_cast<FloatType>(2.0 * EIGEN_PI);
        angle += discretization)
   {
     std::vector<FloatType> buffer;
