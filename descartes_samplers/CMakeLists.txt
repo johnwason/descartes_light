@@ -1,12 +1,18 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(descartes_samplers VERSION 0.1.0 LANGUAGES CXX)
 
+if(WIN32)
+  set(BUILD_SHARED_LIBS OFF CACHE BOOL "Windows builds must be static" FORCE)
+else()
+  set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
+endif()
+
 find_package(descartes_light REQUIRED)
 
 list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_std_11 CXX_FEATURE_FOUND)
 
 # Declare a C++ library
-add_library(${PROJECT_NAME} STATIC
+add_library(${PROJECT_NAME}
   src/evaluators/distance_edge_evaluator.cpp
   src/evaluators/euclidean_distance_edge_evaluator.cpp
   src/evaluators/gantry_euclidean_distance_edge_evaluator.cpp

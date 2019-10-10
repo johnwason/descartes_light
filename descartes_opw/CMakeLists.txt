@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(descartes_opw VERSION 0.1.0 LANGUAGES CXX)
 
+if(WIN32)
+  set(BUILD_SHARED_LIBS OFF CACHE BOOL "Windows builds must be static" FORCE)
+else()
+  set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
+endif()
+
 find_package(descartes_light REQUIRED)
 find_package(opw_kinematics REQUIRED)
 find_package(console_bridge REQUIRED)
@@ -10,7 +16,7 @@ include_directories(${console_bridge_INCLUDE_DIRS})
 list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_std_11 CXX_FEATURE_FOUND)
 
 # Declare a C++ library
-add_library(${PROJECT_NAME} STATIC
+add_library(${PROJECT_NAME}
   src/descartes_opw_kinematics.cpp
 )
 target_link_libraries(${PROJECT_NAME} console_bridge opw_kinematics::opw_kinematics descartes::descartes_light)

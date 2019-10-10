@@ -6,6 +6,12 @@ find_package(Eigen3 REQUIRED)
 find_package(LAPACK REQUIRED)
 find_package(console_bridge REQUIRED)
 
+if(WIN32)
+  set(BUILD_SHARED_LIBS OFF CACHE BOOL "Windows builds must be static" FORCE)
+else()
+  set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
+endif()
+
 list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_std_11 CXX_FEATURE_FOUND)
 
 add_library(${PROJECT_NAME} INTERFACE)

@@ -26,7 +26,7 @@ if(NOT TARGET gtest::GTest)
   set_target_properties(gtest::GTest PROPERTIES INTERFACE_LINK_LIBRARIES "${GTEST_BOTH_LIBRARIES}")
 endif()
 
-add_library(${PROJECT_NAME}_robot STATIC descartes_ikfast_fanuc_m20ia10l_manipulator.cpp)
+add_library(${PROJECT_NAME}_robot descartes_ikfast_fanuc_m20ia10l_manipulator.cpp)
 target_link_libraries(${PROJECT_NAME}_robot PUBLIC ${PROJECT_NAME})
 	if(NOT MSVC)
 	target_compile_options(${PROJECT_NAME}_robot PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)

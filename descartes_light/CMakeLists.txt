@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(descartes_light VERSION 0.1.0 LANGUAGES CXX)
 
+if(WIN32)
+  set(BUILD_SHARED_LIBS OFF CACHE BOOL "Windows builds must be static" FORCE)
+else()
+  set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
+endif()
+
 find_package(OpenMP REQUIRED)
 
 if(NOT TARGET OpenMP::OpenMP_CXX)
@@ -39,7 +45,7 @@ target_include_directories(${PROJECT_NAME}_core SYSTEM INTERFACE
     ${EIGEN3_INCLUDE_DIRS})
 
 # Core Library
-add_library(${PROJECT_NAME} STATIC
+add_library(${PROJECT_NAME}
   src/descartes_light.cpp
   src/ladder_graph.cpp
   src/ladder_graph_dag_search.cpp
@@ -60,7 +66,7 @@ target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC
     ${EIGEN3_INCLUDE_DIRS})
 
 # Declare a C++ library
-add_library(${PROJECT_NAME}_gantry STATIC src/gantry_kinematics.cpp)
+add_library(${PROJECT_NAME}_gantry src/gantry_kinematics.cpp)
 target_link_libraries(${PROJECT_NAME}_gantry PUBLIC console_bridge ${PROJECT_NAME}_core)
 if(NOT MSVC)
 	target_compile_options(${PROJECT_NAME}_gantry PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
