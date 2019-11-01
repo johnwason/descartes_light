@@ -49,6 +49,7 @@ install:
         choco source add -n=ros-win -s="https://roswin.azurewebsites.net/api/v2" --priority=1
         choco install ros-melodic-ros_base -y --execution-timeout=0
         choco install clapack
+        choco install openblas
         choco install console_bridge
         source source_bat.bash 'c:\opt\ros\melodic\x64\setup.bat'
         python -m pip install --upgrade pip
