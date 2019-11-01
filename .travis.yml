@@ -51,6 +51,7 @@ install:
         choco install clapack
         choco install console_bridge
         source source_bat.bash 'c:\opt\ros\melodic\x64\setup.bat'
+        python -m pip install --upgrade pip
         rosdep install --from-paths src --ignore-src -r -y
         /c/opt/vcpkg/vcpkg.exe install jsoncpp:x64-windows
     fi
